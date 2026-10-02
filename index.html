@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>buter</title>
+  <style>
+
+
+
+  </style>
+</head>
+
+
+
+
+
+<body>
+  
+<header class="site-header">
+	<div class="site-header__brand">
+		<img src="assets/logo.png" alt="World Butterflies" class="site-header__icon">
+		<span class="site-header__wordmark">Ciber World - TKJ</span>
+	</div>
+
+	<!-- nav untuk desktop -->
+	<nav class="site-header__nav site-header__nav--desktop">
+		<a href="#" class="active">Menu</a>
+		<a href="team.html">Our Team</a>
+		<label class="theme-toggle">
+			<input type="checkbox" class="theme-switch">
+			<span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+			<span class="theme-toggle__label">Dark Mode</span>
+		</label>
+	</nav>
+
+	<!-- tombol burger, hanya tampil di HP -->
+	<button class="burger" id="burger-btn" aria-label="Buka menu" aria-expanded="false">
+		<span></span><span></span><span></span>
+	</button>
+</header>
+
+<!-- panel menu untuk HP -->
+<nav class="mobile-menu" id="mobile-menu">
+	<a href="#" class="active">Menu</a>
+	<a href="team.html">Our Team</a>
+	<label class="theme-toggle">
+		<input type="checkbox" class="theme-switch">
+		<span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+		<span class="theme-toggle__label">Dark Mode</span>
+	</label>
+</nav>
+  
+<!---- HEADER ------->
+
+<main>
+
+  <h1 class="judul">Port Knocking & SSH Key</h1>
+  <p class="p-subtext">Penerapan Port Knocking dan SSH Key Authentication sebagai Proteksi Ganda pada Manajemen Router.</p>
+  
+<div class="cards">
+	<input type="radio" name="card" id="card-1" checked>
+	<input type="radio" name="card" id="card-2">
+	<input type="radio" name="card" id="card-3">
+	<input type="radio" name="card" id="card-4">
+	<input type="radio" name="card" id="card-5">
+	<input type="radio" name="card" id="card-6">
+	<input type="radio" name="card" id="card-7">
+	<input type="radio" name="card" id="card-8">
+	
+	<div class="circle-container">
+		<div><img src="assets/definisi.png" alt="definisi"></div>
+		<div><img src="" alt=""></div>
+		<div><img src="" alt=""></div>
+		<div><img src="" alt=""></div>
+		<div><img src="" alt=""></div>
+		<div><img src="assets/topologi.png" alt="topologi"></div>
+		<div><img src="assets/tutorial.png" alt="tutorial"></div>
+		<div><img src="assets/konsep.png" alt="konsep"></div>
+	</div>
+	<div class="contents">
+
+		<!-- card 1 -->
+		<article>
+			<h2>🔐Definisi</h2>
+			<ul>
+				<li>Mengenal proteksi ganda dengan Port Knocking dan SSH Key untuk mengamankan akses manajemen router.</li>
+				<li><a class="direct"href="definition.html">informasi lebih lanjut</a></li>
+			</ul>
+			<!--<a href="#">more info</a>-->
+			<div class="buttons">
+					<label for="card-X" title="88 Butterfly" disabled>&#10094;</label>
+					<label for="card-2" title="Monarch Butterfly">&#10095;</label>
+			</div>
+		</article>
+		
+		<!-- card 2 -->
+		<article>
+			<h2>⚙️ Konsep</h2>
+			<ul>
+				<li>Memahami cara kerja dua lapisan keamanan, mulai dari Port Knocking hingga verifikasi SSH Key.</li>
+				<li><a class="direct"href="konsep.html">informasi lebih lanjut</a></li>
+			</ul>
+			<div class="buttons">
+					<label for="card-1" title="Blue Morpho">&#10094;</label>
+					<label for="card-3" title="Peacock Butterfly">&#10095;</label>
+			</div>
+		</article>
+		
+		<!-- card 3 -->
+		<article>
+			<h2>🛠️ Tutorial</h2>
+			<ul>
+				<li>Panduan konfigurasi bertahap untuk menerapkan Port Knocking dan SSH Key pada router.</li>
+				<li><a class="direct"href="tutor.html">informasi lebih lanjut</a></li>
+			</ul>
+			<div class="buttons">
+					<label for="card-2" title="Monarch Butterfly">&#10094;</label>
+					<label for="card-4" title="Ulysses Butterfly">&#10095;</label>
+			</div>
+		</article>
+		
+		<!-- card 4 -->
+		<article>
+			<h2>🌐 Topologi</h2>
+			<ul>
+				<li>Gambaran jaringan yang menunjukkan hubungan antara administrator, router, dan proses akses SSH.</li>
+				<li><a class="direct"href="topologis.html">informasi lebih lanjut</a></li>
+			</ul>
+			<div class="buttons">
+					<label for="card-3" title="Peacock Butterfly">&#10094;</label>
+					<label for="card-X" title="topologi" disabled>&#10095;</label>
+			</div>
+		</article>
+	</div>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__col site-footer__about">
+      <div class="site-footer__brand">
+        <img src="assets/logo.png" alt="Logo" class="site-header__icon">
+        <span class="site-header__wordmark">SMK Boash 1</span>
+      </div>
+      <p>Media pembelajaran keamanan jaringan: Port Knocking dan SSH Key Authentication sebagai proteksi ganda pada manajemen router.</p>
+    </div>
+
+    <nav class="site-footer__col" aria-label="Materi">
+      <h3>Made By Han x-</h3>
+      
+    </nav>
+
+    <nav class="site-footer__col" aria-label="Navigasi">
+      <h3>-xClaude</h3>
+
+    </nav>
+  </div>
+
+  <div class="site-footer__bottom">
+    <span>© <span id="year">2026</span> Ciber World - TKJ.Pak Andy Bayu Project .</span>
+    <a href="#top">Kembali ke atas ↑</a>
+  </div>
+</footer>
+
+<script>
+
+
+
+  
+</script>
+
+<script src="main.js"></script>
+
+</body>
+
+</html>

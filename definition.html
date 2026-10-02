@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <title>Definisi</title>
+  <style>
+  
+  .paragraph{
+    width: 80%;
+    max-width: 1100px;
+    margin: auto;
+  }
+  
+  .judule {
+    display:flex;
+    justify-content: center;
+    margin:20px;
+  }
+  
+ .paragraph>* {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.paragraph>*.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+  
+  .paragraph p{
+    font-size:18px;
+  }
+  
+  .img-p {
+	width: 100%;
+	height: auto;
+	display: block;
+	margin: 1.5rem 0;
+}
+  
+  
+  
+  @media (max-width: 768px) {
+    .paragraph {
+        width: 90%;
+    }
+
+    .paragraph img {
+        width: 100%;
+    }
+
+    .paragraph p {
+        font-size: 14px;
+    }
+}
+  
+  
+  
+  
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="site-header__brand">
+      <img src="assets/logo.png" alt="World Butterflies" class="site-header__icon">
+      <span class="site-header__wordmark">Definisi</span>
+    </div>
+    
+    <!-- nav untuk desktop -->
+    <nav class="site-header__nav site-header__nav--desktop">
+      <a href="index.html">Menu</a>
+      <a href="team.html">Our Team</a>
+      <label class="theme-toggle">
+        <input type="checkbox" class="theme-switch">
+        <span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+        <span class="theme-toggle__label">Dark Mode</span>
+      </label>
+    </nav>
+    
+    <!-- tombol burger, hanya tampil di HP -->
+    <button class="burger" id="burger-btn" aria-label="Buka menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  
+  <!-- panel menu untuk HP -->
+  <nav class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Menu</a>
+    <a href="team.html">Our Team</a>
+    <label class="theme-toggle">
+      <input type="checkbox" class="theme-switch">
+      <span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+      <span class="theme-toggle__label">Dark Mode</span>
+    </label>
+  </nav>
+  
+  <div class="paragraph">
+    <h1 class="judule">Port Knocking</h1>
+    <img class="img-p" src="https://www.draytek.com.tw/assets/files/faq/2025/CF6938/port%20knocking%20vpn.png">
+  <p>Port Knocking adalah metode keamanan jaringan yang digunakan untuk membatasi akses ke layanan tertentu pada sebuah perangkat jaringan. Akses tidak langsung diberikan kepada semua client, melainkan hanya kepada client yang melakukan urutan koneksi ke port-port tertentu yang telah ditentukan.</p>
+  <p>Metode ini bekerja dengan memanfaatkan urutan koneksi sebagai semacam kode akses. Client mengirimkan koneksi ke beberapa port dengan urutan yang benar, kemudian firewall mengenali urutan tersebut dan memberikan izin akses.</p>
+  <p>Jika urutan yang dikirim tidak sesuai, akses ke layanan yang dilindungi tetap tertutup. Dengan demikian, Port Knocking dapat membantu mengurangi paparan layanan jaringan terhadap akses yang tidak diinginkan, misalnya layanan SSH atau SFTP.</p>
+  <p>Pada penerapannya di MikroTik, Port Knocking dapat dikombinasikan dengan firewall dan NAT. Firewall mendeteksi urutan port dari client, kemudian memasukkan IP client ke daftar yang diizinkan sehingga client tersebut dapat mengakses layanan tertentu.</p>
+  <h1> Knock Knock </h1>
+  <h1>who's there?</h1>
+  <h1>rehan ganteng😎,no jokes</h1>
+  
+  <a href="index.html" class="back-link">← Kembali ke Menu</a>
+  </div>
+  
+  
+
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__col site-footer__about">
+      <div class="site-footer__brand">
+        <img src="assets/logo.png" alt="Logo" class="site-header__icon">
+        <span class="site-header__wordmark">SMK Boash 1</span>
+      </div>
+      <p>Media pembelajaran keamanan jaringan: Port Knocking dan SSH Key Authentication sebagai proteksi ganda pada manajemen router.</p>
+    </div>
+
+    <nav class="site-footer__col" aria-label="Materi">
+      <h3>Made By Han x-</h3>
+      
+    </nav>
+
+    <nav class="site-footer__col" aria-label="Navigasi">
+      <h3>-xClaude</h3>
+
+    </nav>
+  </div>
+
+  <div class="site-footer__bottom">
+    <span>© <span id="year">2026</span> Ciber World - TKJ.Pak Andy Bayu Project .</span>
+    <a href="#top">Kembali ke atas ↑</a>
+  </div>
+</footer>
+  
+  
+  <script src="main.js"></script>
+</body>
+
+</html>

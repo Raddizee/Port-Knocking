@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="style.css">
+	<title>Topologi - Ciber World TKJ</title>
+	<style>
+		/* ===== variabel khusus diagram, ikut light/dark via light-dark() ===== */
+		:root {
+			--diagram-surface: light-dark(#ffffff, #161d2b);
+			--diagram-border: light-dark(#e2e6ed, #263048);
+			--diagram-accent: light-dark(#1f6feb, #5b9dff);
+			--diagram-accent-soft: light-dark(#e8f0fe, #1b2b4a);
+			--diagram-danger: light-dark(#d64545, #ff6b6b);
+			--diagram-danger-soft: light-dark(#fdeaea, #3a1f22);
+			--diagram-ok: light-dark(#1a9e6b, #3ddc97);
+			--diagram-ok-soft: light-dark(#e6f7f0, #123628);
+			--diagram-line: light-dark(#9aa7bd, #4a567a);
+		}
+
+		.topology-wrap {
+  width: 90vw;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+		.hero {
+			padding: 2rem 1.25rem 1rem;
+			text-align: center;
+		}
+		.hero h1 {
+			margin: 0 0 .4rem;
+			font-size: clamp(1.2rem, 4vw, 1.6rem);
+		}
+		.hero p {
+			margin: 0;
+			opacity: .7;
+			font-size: .85rem;
+		}
+
+		.diagram-card {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--diagram-surface);
+  border: 1px solid var(--diagram-border);
+  border-radius: 16px;
+  padding: 1rem;
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+.diagram-card svg {
+  display: block;
+  width: 100%;
+  min-width: 640px;
+  height: auto;
+}
+
+		.legend {
+			margin-top: 1.5rem;
+			display: flex;
+			flex-wrap: wrap;
+			gap: .6rem 1.2rem;
+			font-size: .8rem;
+			opacity: .75;
+		}
+		.legend span {
+			display: inline-flex;
+			align-items: center;
+			gap: .4rem;
+		}
+		.dot {
+			width: .6rem;
+			height: .6rem;
+			border-radius: 50%;
+			flex-shrink: 0;
+		}
+
+		.steps {
+			margin-top: 1.5rem;
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+			gap: .9rem;
+		}
+		.step {
+			background: var(--diagram-surface);
+			border: 1px solid var(--diagram-border);
+			border-radius: 12px;
+			padding: 1rem;
+		}
+		.step .num {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 1.6rem;
+			height: 1.6rem;
+			border-radius: 50%;
+			background: var(--diagram-accent-soft);
+			color: var(--diagram-accent);
+			font-weight: 700;
+			font-size: .85rem;
+			margin-bottom: .5rem;
+		}
+		.step h3 {
+			margin: 0 0 .3rem;
+			font-size: .9rem;
+			font-family: system-ui, sans-serif;
+		}
+		.step p {
+			margin: 0;
+			opacity: .75;
+			font-size: .8rem;
+		}
+		
+		/* =========================================
+   FADE IN ON SCROLL
+========================================= */
+
+.hero,
+.diagram-card,
+.legend,
+.step,
+.back-link {
+  opacity: 0;
+  transform: translateY(5vw);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+
+/* Saat masuk viewport */
+
+.hero.show,
+.diagram-card.show,
+.legend.show,
+.step.show,
+.back-link.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+		
+		
+		@media (max-width: 768px) {
+  .topology-wrap {
+    width: 90vw;
+  }
+
+  .hero {
+    padding: 1.5rem 0.5rem 1rem;
+  }
+
+  .hero h1 {
+    font-size: 5vw;
+  }
+
+  .hero p {
+    font-size: 3.2vw;
+  }
+
+  .diagram-card {
+    padding: 0.5rem;
+    border-radius: 12px;
+  }
+
+  .diagram-card svg {
+    min-width: 640px;
+  }
+
+  .legend {
+    font-size: 3vw;
+    gap: 0.5rem 1rem;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .step {
+    padding: 0.9rem;
+  }
+
+  .step h3 {
+    font-size: 4vw;
+  }
+
+  .step p {
+    font-size: 3.3vw;
+  }
+}
+		
+		
+	</style>
+</head>
+<body>
+
+<header class="site-header">
+	<div class="site-header__brand">
+		<img src="assets/logo.png" alt="Ciber World - TKJ" class="site-header__icon">
+		<span class="site-header__wordmark">Ciber World - TKJ</span>
+	</div>
+
+	<nav class="site-header__nav site-header__nav--desktop">
+		<a href="index.html">Menu</a>
+		<a href="team.html">Our Team</a>
+		<label class="theme-toggle">
+			<input type="checkbox" class="theme-switch">
+			<span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+			<span class="theme-toggle__label">Dark Mode</span>
+		</label>
+	</nav>
+
+	<button class="burger" id="burger-btn" aria-label="Buka menu" aria-expanded="false">
+		<span></span><span></span><span></span>
+	</button>
+</header>
+
+<nav class="mobile-menu" id="mobile-menu">
+	<a href="index.html">Menu</a>
+	<a href="team.html">Our Team</a>
+	<label class="theme-toggle">
+		<input type="checkbox" class="theme-switch">
+		<span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+		<span class="theme-toggle__label">Dark Mode</span>
+	</label>
+</nav>
+
+<main>
+	<div class="topology-wrap">
+		<div class="hero">
+			<h1>Topologi Port Knocking + SSH Key Authentication</h1>
+			<p>Proteksi ganda pada manajemen router — jaringan tersembunyi, autentikasi tanpa password</p>
+		</div>
+
+		<div class="diagram-card">
+			<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg">
+				<defs>
+					<marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+						<path d="M0,0 L6,3 L0,6 Z" fill="var(--diagram-line)"></path>
+					</marker>
+				</defs>
+
+				<rect x="30" y="180" width="130" height="70" rx="12" fill="var(--diagram-danger-soft)" stroke="var(--diagram-danger)"></rect>
+				<text x="95" y="210" text-anchor="middle" fill="currentColor" font-size="14" font-weight="600">Internet</text>
+				<text x="95" y="228" text-anchor="middle" fill="currentColor" opacity=".6" font-size="11">Penyerang / klien</text>
+
+				<line x1="160" y1="215" x2="235" y2="215" stroke="var(--diagram-line)" stroke-width="2" marker-end="url(#arrow)"></line>
+
+				<rect x="240" y="60" width="200" height="320" rx="14" fill="var(--diagram-surface)" stroke="var(--diagram-border)"></rect>
+				<text x="340" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">Firewall Router (Port Knocking)</text>
+
+				<rect x="265" y="105" width="150" height="46" rx="8" fill="var(--diagram-accent-soft)" stroke="var(--diagram-accent)"></rect>
+				<text x="340" y="126" text-anchor="middle" font-size="12" fill="currentColor">Knock 1 → TCP 7000</text>
+				<text x="340" y="142" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">masuk address-list knock1</text>
+
+				<line x1="340" y1="151" x2="340" y2="170" stroke="var(--diagram-line)" stroke-width="2" marker-end="url(#arrow)"></line>
+
+				<rect x="265" y="171" width="150" height="46" rx="8" fill="var(--diagram-accent-soft)" stroke="var(--diagram-accent)"></rect>
+				<text x="340" y="192" text-anchor="middle" font-size="12" fill="currentColor">Knock 2 → TCP 8000</text>
+				<text x="340" y="208" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">masuk address-list knock2</text>
+
+				<line x1="340" y1="217" x2="340" y2="236" stroke="var(--diagram-line)" stroke-width="2" marker-end="url(#arrow)"></line>
+
+				<rect x="265" y="237" width="150" height="46" rx="8" fill="var(--diagram-accent-soft)" stroke="var(--diagram-accent)"></rect>
+				<text x="340" y="258" text-anchor="middle" font-size="12" fill="currentColor">Knock 3 → TCP 9000</text>
+				<text x="340" y="274" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">masuk address-list ssh-allowed</text>
+
+				<line x1="340" y1="283" x2="340" y2="302" stroke="var(--diagram-line)" stroke-width="2" marker-end="url(#arrow)"></line>
+
+				<rect x="265" y="303" width="150" height="56" rx="8" fill="var(--diagram-ok-soft)" stroke="var(--diagram-ok)"></rect>
+				<text x="340" y="326" text-anchor="middle" font-size="12" fill="currentColor">Port 22 dibuka</text>
+				<text x="340" y="342" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">hanya untuk IP di ssh-allowed</text>
+				<text x="340" y="355" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">timeout singkat (±1 menit)</text>
+
+				<line x1="440" y1="330" x2="520" y2="330" stroke="var(--diagram-line)" stroke-width="2" marker-end="url(#arrow)"></line>
+				<text x="480" y="320" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">SSH + key</text>
+
+				<rect x="525" y="270" width="190" height="120" rx="14" fill="var(--diagram-surface)" stroke="var(--diagram-border)"></rect>
+				<text x="620" y="296" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">Router (MikroTik)</text>
+
+				<rect x="545" y="308" width="150" height="40" rx="8" fill="var(--diagram-accent-soft)" stroke="var(--diagram-accent)"></rect>
+				<text x="620" y="332" text-anchor="middle" font-size="11" fill="currentColor">SSH Key Authentication</text>
+
+				<rect x="545" y="354" width="150" height="26" rx="6" fill="var(--diagram-danger-soft)" stroke="var(--diagram-danger)"></rect>
+				<text x="620" y="371" text-anchor="middle" font-size="10" fill="currentColor">Password login: OFF</text>
+
+				<line x1="620" y1="270" x2="620" y2="210" stroke="var(--diagram-line)" stroke-width="2" marker-end="url(#arrow)"></line>
+				<text x="650" y="240" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">akses diterima</text>
+
+				<rect x="540" y="130" width="160" height="70" rx="12" fill="var(--diagram-ok-soft)" stroke="var(--diagram-ok)"></rect>
+				<text x="620" y="160" text-anchor="middle" font-size="13" font-weight="600" fill="currentColor">Admin Client</text>
+				<text x="620" y="178" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">id_ed25519 (private key)</text>
+
+				<line x1="715" y1="330" x2="790" y2="330" stroke="var(--diagram-line)" stroke-width="2" marker-end="url(#arrow)"></line>
+				<rect x="795" y="295" width="90" height="70" rx="12" fill="var(--diagram-surface)" stroke="var(--diagram-border)"></rect>
+				<text x="840" y="325" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor">LAN</text>
+				<text x="840" y="342" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">jaringan lokal</text>
+
+				<line x1="95" y1="250" x2="95" y2="400" stroke="var(--diagram-danger)" stroke-width="1.5" stroke-dasharray="4 3"></line>
+				<line x1="95" y1="400" x2="330" y2="400" stroke="var(--diagram-danger)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"></line>
+				<text x="215" y="416" text-anchor="middle" font-size="10" fill="var(--diagram-danger)">Urutan knock salah / port 22 langsung → tetap filtered / drop</text>
+			</svg>
+		</div>
+
+		<div class="legend">
+			<span><i class="dot" style="background:var(--diagram-danger)"></i> Belum terautentikasi</span>
+			<span><i class="dot" style="background:var(--diagram-accent)"></i> Proses port knocking</span>
+			<span><i class="dot" style="background:var(--diagram-ok)"></i> Akses diizinkan</span>
+		</div>
+
+		<div class="steps">
+			<div class="step"><span class="num">1</span>
+				<h3>Port SSH tertutup</h3>
+				<p>Port 22 diblokir default oleh firewall, tampak <em>filtered</em> saat di-scan dari luar.</p>
+			</div>
+			<div class="step"><span class="num">2</span>
+				<h3>Urutan ketukan</h3>
+				<p>Klien mengirim paket ke port 7000 → 8000 → 9000 secara berurutan dan benar.</p>
+			</div>
+			<div class="step"><span class="num">3</span>
+				<h3>IP masuk whitelist</h3>
+				<p>Firewall menambahkan IP klien ke address-list <code>ssh-allowed</code> dengan timeout singkat.</p>
+			</div>
+			<div class="step"><span class="num">4</span>
+				<h3>Autentikasi SSH Key</h3>
+				<p>Login hanya diterima dengan kunci privat yang cocok; login password dinonaktifkan.</p>
+			</div>
+		</div>
+
+		<a href="index.html" class="back-link">← Kembali ke Menu</a>
+	</div>
+</main>
+
+<footer class="site-footer">
+	<div class="site-footer__inner">
+		<div class="site-footer__col site-footer__about">
+			<div class="site-footer__brand">
+				<img src="assets/logo.png" alt="Logo" class="site-header__icon">
+				<span class="site-header__wordmark">SMK Boash 1</span>
+			</div>
+			<p>Media pembelajaran keamanan jaringan: Port Knocking dan SSH Key Authentication sebagai proteksi ganda pada manajemen router.</p>
+		</div>
+		<nav class="site-footer__col" aria-label="Materi">
+			<h3>Made By Han x-</h3>
+		</nav>
+		<nav class="site-footer__col" aria-label="Navigasi">
+			<h3>-xClaude</h3>
+		</nav>
+	</div>
+	<div class="site-footer__bottom">
+		<span>© <span id="year">2026</span> Ciber World - TKJ. Pak Andy Bayu Project.</span>
+		<a href="#top">Kembali ke atas ↑</a>
+	</div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

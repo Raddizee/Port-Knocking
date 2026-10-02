@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="style.css">
+	<title>Tutorial - Ciber World TKJ</title>
+	
+	<style>
+		
+		/* ===== scroll reveal ===== */
+.article > h1,
+.article > p,
+.article > .step,
+.article > .note,
+.article > .back-link {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.article > h1.show,
+.article > p.show,
+.article > .step.show,
+.article > .note.show,
+.article > .back-link.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+		
+	</style>
+	
+</head>
+<body>
+
+<header class="site-header">
+	<div class="site-header__brand">
+		<img src="assets/logo.png" alt="Ciber World - TKJ" class="site-header__icon">
+		<span class="site-header__wordmark">Ciber World - TKJ</span>
+	</div>
+	<nav class="site-header__nav site-header__nav--desktop">
+		<a href="index.html">Menu</a>
+		<a href="team.html">Our Team</a>
+		<label class="theme-toggle">
+			<input type="checkbox" class="theme-switch">
+			<span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+			<span class="theme-toggle__label">Dark Mode</span>
+		</label>
+	</nav>
+	<button class="burger" id="burger-btn" aria-label="Buka menu" aria-expanded="false">
+		<span></span><span></span><span></span>
+	</button>
+</header>
+
+<nav class="mobile-menu" id="mobile-menu">
+	<a href="index.html">Menu</a>
+	<a href="team.html">Our Team</a>
+	<label class="theme-toggle">
+		<input type="checkbox" class="theme-switch">
+		<span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+		<span class="theme-toggle__label">Dark Mode</span>
+	</label>
+</nav>
+
+<main class="article-main">
+	<article class="article">
+		<h1 class="judul">🛠️ Tutorial Konfigurasi Port Knocking pada MikroTik</h1>
+		<p class="p-subtext">
+			Tutorial ini menggunakan RouterOS dengan mekanisme firewall <code>address-list</code>.
+			Prinsipnya, setiap tahapan knocking memasukkan IP sumber ke daftar sementara.
+			Jika urutannya benar, IP tersebut masuk ke daftar <code>secured</code> dan memperoleh akses.
+		</p>
+
+		<section class="step">
+			<h2>1. Tentukan urutan Port Knocking</h2>
+			<p>Sebagai contoh, gunakan urutan:</p>
+			<p class="knock-sequence">547 → 879 → 47</p>
+			<p>Timeout dibuat singkat, misalnya 30 detik, sehingga client harus menyelesaikan urutan dalam waktu tersebut.</p>
+		</section>
+
+		<section class="step">
+			<h2>2. Buat rule Knock pertama</h2>
+			<pre><code>/ip firewall filter
+add chain=input protocol=udp dst-port=547 \
+    in-interface-list=WAN \
+    action=add-src-to-address-list \
+    address-list=knock1 \
+    address-list-timeout=30s</code></pre>
+			<p>Saat client mengirim koneksi UDP ke port 547, IP sumbernya dimasukkan ke <code>knock1</code>.</p>
+		</section>
+
+		<section class="step">
+			<h2>3. Buat rule Knock kedua</h2>
+			<pre><code>/ip firewall filter
+add chain=input protocol=udp dst-port=879 \
+    in-interface-list=WAN \
+    src-address-list=knock1 \
+    action=add-src-to-address-list \
+    address-list=knock2 \
+    address-list-timeout=30s</code></pre>
+			<p>Rule ini hanya berlaku untuk IP yang sebelumnya sudah berhasil melakukan knock pertama.</p>
+		</section>
+
+		<section class="step">
+			<h2>4. Buat rule Knock ketiga</h2>
+			<pre><code>/ip firewall filter
+add chain=input protocol=udp dst-port=47 \
+    in-interface-list=WAN \
+    src-address-list=knock2 \
+    action=add-src-to-address-list \
+    address-list=secured \
+    address-list-timeout=30m</code></pre>
+			<p>Jika ketiga tahapan benar, IP client dimasukkan ke <code>secured</code> selama 30 menit.</p>
+		</section>
+
+		<section class="step">
+			<h2>5. Izinkan akses SSH/SFTP</h2>
+			<p>Jika layanan SSH/SFTP berada pada MikroTik:</p>
+			<pre><code>/ip firewall filter
+add chain=input protocol=tcp dst-port=22 \
+    in-interface-list=WAN \
+    src-address-list=secured \
+    action=accept</code></pre>
+			<p>Rule <code>accept</code> ini harus berada <strong>sebelum</strong> rule drop WAN yang menutup akses masuk.</p>
+		</section>
+
+		<section class="step">
+			<h2>6. Jika SSH/SFTP berada di server LAN</h2>
+			<p>Misalnya server memiliki IP <code>192.168.10.129</code>. Maka selain firewall, diperlukan destination NAT (dst-nat) untuk meneruskan koneksi ke server:</p>
+			<pre><code>/ip firewall nat
+add chain=dstnat protocol=tcp dst-port=22 \
+    src-address-list=secured \
+    action=dst-nat \
+    to-addresses=192.168.10.129 \
+    to-ports=22</code></pre>
+			<p>Kemudian pastikan firewall forward mengizinkan koneksi dari <code>secured</code> menuju server tersebut.</p>
+		</section>
+
+		<section class="step">
+			<h2>Alur keseluruhan</h2>
+			<pre class="diagram"><code>Client
+   │
+   ├── UDP 547 ──→ knock1
+   ├── UDP 879 ──→ knock2
+   └── UDP 47  ──→ secured
+                         │
+                         ↓
+                  Akses TCP 22
+                         │
+                         ↓
+                 192.168.10.129</code></pre>
+		</section>
+
+		<aside class="note">
+			<strong>Catatan:</strong> Contoh port 547 → 879 → 47 mengikuti ilustrasi yang digunakan.
+			Dalam penerapan nyata, port knocking sebaiknya dipadukan dengan autentikasi SSH yang kuat
+			dan aturan firewall lain — Port Knocking merupakan lapisan tambahan, bukan pengganti autentikasi.
+		</aside>
+
+		<a href="index.html" class="back-link">← Kembali ke Menu</a>
+	</article>
+</main>
+
+<footer class="site-footer">
+	<div class="site-footer__inner">
+		<div class="site-footer__col site-footer__about">
+			<div class="site-footer__brand">
+				<img src="assets/logo.png" alt="Logo" class="site-header__icon">
+				<span class="site-header__wordmark">SMK Boash 1</span>
+			</div>
+			<p>Media pembelajaran keamanan jaringan: Port Knocking dan SSH Key Authentication sebagai proteksi ganda pada manajemen router.</p>
+		</div>
+		
+		<nav class="site-footer__col" aria-label="Materi">
+			<h3>Made By Han x-</h3>
+			
+		</nav>
+		
+		<nav class="site-footer__col" aria-label="Navigasi">
+			<h3>-xClaude</h3>
+			
+		</nav>
+	</div>
+	
+	<div class="site-footer__bottom">
+		<span>© <span id="year">2026</span> Ciber World - TKJ.Pak Andy Bayu Project .</span>
+		<a href="#top">Kembali ke atas ↑</a>
+	</div>
+</footer>
+
+<script src="main.js">
+	
+</script>
+</body>
+</html>

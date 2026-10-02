@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <title></title>
+  
+  <style>
+    .paragraph{
+    width: 80%;
+    max-width: 1100px;
+    margin: auto;
+  }
+  
+  .paragraph p{
+    font-size:18px;
+  }
+  
+  .paragraph>* {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.paragraph>*.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.paragraph img {
+  width: 60%;
+  max-width: 700px;
+  height: auto;
+}
+  
+  .paragraph p{
+    font-size:18px;
+  }
+  
+  @media (max-width: 768px) {
+    .paragraph {
+        width: 90%;
+    }
+
+    .paragraph img {
+        width: 100%;
+    }
+
+    .paragraph p {
+        font-size: 14px;
+    }
+}
+  
+  </style>
+  
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="site-header__brand">
+      <img src="assets/logo.png" alt="World Butterflies" class="site-header__icon">
+      <span class="site-header__wordmark">Konsep</span>
+    </div>
+    
+    <!-- nav untuk desktop -->
+    <nav class="site-header__nav site-header__nav--desktop">
+      <a href="index.html">Menu</a>
+      <a href="team.html">Our Team</a>
+      <label class="theme-toggle">
+        <input type="checkbox" class="theme-switch">
+        <span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+        <span class="theme-toggle__label">Dark Mode</span>
+      </label>
+    </nav>
+    
+    <!-- tombol burger, hanya tampil di HP -->
+    <button class="burger" id="burger-btn" aria-label="Buka menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  
+  <!-- panel menu untuk HP -->
+  <nav class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Menu</a>
+    <a href="team.html">Our Team</a>
+    <label class="theme-toggle">
+      <input type="checkbox" class="theme-switch">
+      <span class="theme-toggle__track"><span class="theme-toggle__thumb"></span></span>
+      <span class="theme-toggle__label">Dark Mode</span>
+    </label>
+  </nav>
+  
+  <div class="paragraph">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV8E9RuqnvSEduQ22W5W42mQd-jTVmJCrpguOsWV_IKR667uk7P6b6wKjE&s=10">
+    <p>Port Knocking bekerja dengan konsep pemberian akses berdasarkan urutan koneksi ke beberapa port tertentu. Pada gambar, client dengan IP X mengirimkan koneksi ke beberapa port UDP dengan urutan yang telah ditentukan, yaitu port 547 → 879 → 47. Urutan tersebut berfungsi sebagai tanda atau “ketukan” yang dikenali oleh firewall MikroTik.</p>
+    <p>Setelah MikroTik menerima urutan port yang sesuai, firewall mengenali IP X sebagai client yang diizinkan. IP tersebut kemudian dapat dimasukkan ke dalam daftar akses (address list) sehingga aturan firewall berikutnya dapat memberikan izin untuk mengakses layanan yang dilindungi.</p>
+    <p>Pada gambar, layanan yang dilindungi adalah SSH/SFTP pada TCP port 22. Client dengan IP X yang telah berhasil melakukan port knocking dapat melanjutkan koneksi menuju layanan tersebut dan diteruskan melalui NAT ke server dengan alamat 192.168.10.129.</p>
+    <p>Sebaliknya, client dengan IP Y yang langsung mencoba mengakses SSH/SFTP tanpa melakukan urutan port knocking akan ditolak oleh firewall. Hal ini ditunjukkan oleh garis merah dan tanda X pada gambar.</p>
+    <p>Dengan demikian, konsep utama Port Knocking adalah memisahkan akses menjadi dua tahap: client harus terlebih dahulu memberikan urutan port yang benar, kemudian firewall memberikan izin untuk mengakses layanan yang dilindungi. Mekanisme ini dapat digunakan sebagai lapisan keamanan tambahan pada jaringan, bukan sebagai pengganti autentikasi seperti username dan password.</p>
+    
+    
+    <a href="index.html" class="back-link">← Kembali ke Menu</a>
+    
+  </div>
+  
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__col site-footer__about">
+      <div class="site-footer__brand">
+        <img src="assets/logo.png" alt="Logo" class="site-header__icon">
+        <span class="site-header__wordmark">SMK Boash 1</span>
+      </div>
+      <p>Media pembelajaran keamanan jaringan: Port Knocking dan SSH Key Authentication sebagai proteksi ganda pada manajemen router.</p>
+    </div>
+    
+    <nav class="site-footer__col" aria-label="Materi">
+      <h3>Made By Han x-</h3>
+      
+    </nav>
+    
+    <nav class="site-footer__col" aria-label="Navigasi">
+      <h3>-xClaude</h3>
+      
+    </nav>
+  </div>
+  
+  <div class="site-footer__bottom">
+    <span>© <span id="year">2026</span> Ciber World - TKJ.Pak Andy Bayu Project .</span>
+    <a href="#top">Kembali ke atas ↑</a>
+  </div>
+</footer>
+  
+  
+  
+  <script src="main.js"></script>
+</body>
+
+</html>
